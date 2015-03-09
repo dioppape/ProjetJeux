@@ -5,6 +5,31 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
     <body>
-        <h1>Hello World!</h1>
+      <body>
+        <h1>Jeux WebSocket </h1>
+        <textarea readonly="readonly" id="jeuxtext" rows="16" cols="60"></textarea> 
+        <br>
+         <input type="text" id="messagetext" />
+         <input type="button" value="send" onclick="sendMessage();" />   
+    </body>
+    <script type="text/javascript">
+    var websocket = new WebSocket("ws://localhost:8081/ProjetJeux/serversocket"); 
+      websocket.onmessage=function processMessage(inmessage){
+       console.log("return "+inmessage);
+       var jsonData=JSON.parse(inmessage.data);
+       if(jsonData.message!==null)
+        jeuxtext.value+=jsonData.message+"\n";
+        };
+ 
+    function sendMessage(){
+        websocket.send(messagetext.value);
+        messagetext.value="";
+    }
+    /*
+    Window.onbeforeunload=function dosomething(){
+        websocket.onclose=function(){};
+        websocket.close();
+    };*/
+    </script>
     </body>
 </html>
